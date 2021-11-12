@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using MQTTnet.Diagnostics;
+using Microsoft.Extensions.Logging;
+using MQTTnet.Diagnostics.Logger;
 using System;
 using System.Threading;
 
@@ -16,9 +16,9 @@ namespace MQTTnet.Server.Logging
 
         public event EventHandler<MqttNetLogMessagePublishedEventArgs> LogMessagePublished;
 
-        public IMqttNetScopedLogger CreateScopedLogger(string source)
+        public MqttNetSourceLogger CreateScopedLogger(string source)
         {
-            return new MqttNetScopedLogger(this, source);
+            return new MqttNetSourceLogger(this, source);
         }
 
         public void Publish(MqttNetLogLevel level, string source, string message, object[] parameters, Exception exception)
