@@ -9,6 +9,10 @@ _MQTTnet Server_ is a standalone cross platform MQTT server (like mosquitto) bas
 * Provides a HTTP based API (including Swagger endpoint)
 * Extensive configuration parameters and customization supported
 
+<p align="center">
+<img src="https://github.com/chkr1011/MQTTnet.Server/blob/main/Images/Screenshot1.png?raw=true">
+</p>
+
 ## Starting portable version
 The portable version requires a local installation of the .net core runtime. With that runtime installed the server can be started via the following comand.
 
