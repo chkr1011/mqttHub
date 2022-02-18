@@ -25,4 +25,4 @@ Windows:
 > MQTTnet.Server.exe
 > 
 Linux:		
-> MQTTnet.Server (must be set to _executable_ first)
+> ./MQTTnet.Server (must be set to _executable_ first via chmod +c ./MQTTnet.Server)
