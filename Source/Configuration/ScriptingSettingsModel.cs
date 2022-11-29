@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace MQTTnet.Server.Configuration
-{
-    public class ScriptingSettingsModel
-    {
-        public string ScriptsPath { get; set; }
+// ReSharper disable CollectionNeverUpdated.Global
 
-        public List<string> IncludePaths { get; set; }
-    }
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+namespace MQTTnetServer.Configuration;
+
+public sealed class ScriptingSettingsModel
+{
+    public string ScriptsPath { get; set; }
+
+    public List<string> IncludePaths { get; set; }
 }

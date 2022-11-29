@@ -1,47 +1,46 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
-namespace MQTTnet.Server.Scripting.DataSharing
+namespace MQTTnetServer.Scripting.DataSharing;
+
+public class DataSharingService
 {
-    public class DataSharingService
+    readonly ILogger<DataSharingService> _logger;
+    readonly PythonScriptHostService _pythonScriptHostService;
+    readonly Dictionary<string, object> _storage = new();
+
+    public DataSharingService(PythonScriptHostService pythonScriptHostService, ILogger<DataSharingService> logger)
     {
-        readonly Dictionary<string, object> _storage = new Dictionary<string, object>();
-        readonly PythonScriptHostService _pythonScriptHostService;
-        readonly ILogger<DataSharingService> _logger;
+        _pythonScriptHostService = pythonScriptHostService ?? throw new ArgumentNullException(nameof(pythonScriptHostService));
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
 
-        public DataSharingService(PythonScriptHostService pythonScriptHostService, ILogger<DataSharingService> logger)
+    public void Configure()
+    {
+        _pythonScriptHostService.RegisterProxyObject("write_shared_data", new Action<string, object>(Write));
+        _pythonScriptHostService.RegisterProxyObject("read_shared_data", new Func<string, object, object>(Read));
+    }
+
+    public void Write(string key, object value)
+    {
+        lock (_storage)
         {
-            _pythonScriptHostService = pythonScriptHostService ?? throw new ArgumentNullException(nameof(pythonScriptHostService));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _storage[key] = value;
+            _logger.LogInformation($"Shared data with key '{key}' updated.");
         }
+    }
 
-        public void Configure()
+    public object Read(string key, object defaultValue)
+    {
+        lock (_storage)
         {
-            _pythonScriptHostService.RegisterProxyObject("write_shared_data", new Action<string, object>(Write));
-            _pythonScriptHostService.RegisterProxyObject("read_shared_data", new Func<string, object, object>(Read));
-        }
-
-        public void Write(string key, object value)
-        {
-            lock (_storage)
+            if (!_storage.TryGetValue(key, out var value))
             {
-                _storage[key] = value;
-                _logger.LogInformation($"Shared data with key '{key}' updated.");
+                return defaultValue;
             }
-        }
 
-        public object Read(string key, object defaultValue)
-        {
-            lock (_storage)
-            {
-                if (!_storage.TryGetValue(key, out var value))
-                {
-                    return defaultValue;
-                }
-
-                return value;
-            }
+            return value;
         }
     }
 }

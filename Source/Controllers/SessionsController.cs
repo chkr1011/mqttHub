@@ -6,74 +6,73 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MQTTnet.Server.Mqtt;
-using MQTTnet.Server.Status;
+using MQTTnet.Server;
+using MQTTnetServer.Mqtt;
 
-namespace MQTTnet.Server.Controllers
+namespace MQTTnetServer.Controllers;
+
+[Authorize]
+[ApiController]
+public sealed class SessionsController : Controller
 {
-    [Authorize]
-    [ApiController]
-    public class SessionsController : Controller
+    readonly MqttServerService _mqttServerService;
+
+    public SessionsController(MqttServerService mqttServerService)
     {
-        private readonly MqttServerService _mqttServerService;
+        _mqttServerService = mqttServerService ?? throw new ArgumentNullException(nameof(mqttServerService));
+    }
 
-        public SessionsController(MqttServerService mqttServerService)
+    [Route("api/v1/sessions")]
+    [HttpGet]
+    public async Task<ActionResult<IList<MqttSessionStatus>>> GetSessions()
+    {
+        return new ObjectResult(await _mqttServerService.GetSessionStatusAsync());
+    }
+
+    [Route("api/v1/sessions/{clientId}")]
+    [HttpGet]
+    public async Task<ActionResult<MqttClientStatus>> GetSession(string clientId)
+    {
+        clientId = HttpUtility.UrlDecode(clientId);
+
+        var session = (await _mqttServerService.GetSessionStatusAsync()).FirstOrDefault(c => c.Id == clientId);
+        if (session == null)
         {
-            _mqttServerService = mqttServerService ?? throw new ArgumentNullException(nameof(mqttServerService));
+            return new StatusCodeResult((int)HttpStatusCode.NotFound);
         }
 
-        [Route("api/v1/sessions")]
-        [HttpGet]
-        public async Task<ActionResult<IList<IMqttSessionStatus>>> GetSessions()
+        return new ObjectResult(session);
+    }
+
+    [Route("api/v1/sessions/{clientId}")]
+    [HttpDelete]
+    public async Task<ActionResult> DeleteSession(string clientId)
+    {
+        clientId = HttpUtility.UrlDecode(clientId);
+
+        var session = (await _mqttServerService.GetSessionStatusAsync()).FirstOrDefault(c => c.Id == clientId);
+        if (session == null)
         {
-            return new ObjectResult(await _mqttServerService.GetSessionStatusAsync());
+            return new StatusCodeResult((int)HttpStatusCode.NotFound);
         }
 
-        [Route("api/v1/sessions/{clientId}")]
-        [HttpGet]
-        public async Task<ActionResult<IMqttClientStatus>> GetSession(string clientId)
+        await session.DeleteAsync();
+        return StatusCode((int)HttpStatusCode.NoContent);
+    }
+
+    [Route("api/v1/sessions/{clientId}/pendingApplicationMessages")]
+    [HttpDelete]
+    public async Task<ActionResult> DeletePendingApplicationMessages(string clientId)
+    {
+        clientId = HttpUtility.UrlDecode(clientId);
+
+        var session = (await _mqttServerService.GetSessionStatusAsync()).FirstOrDefault(c => c.Id == clientId);
+        if (session == null)
         {
-            clientId = HttpUtility.UrlDecode(clientId);
-
-            var session = (await _mqttServerService.GetSessionStatusAsync()).FirstOrDefault(c => c.ClientId == clientId);
-            if (session == null)
-            {
-                return new StatusCodeResult((int)HttpStatusCode.NotFound);
-            }
-
-            return new ObjectResult(session);
+            return new StatusCodeResult((int)HttpStatusCode.NotFound);
         }
 
-        [Route("api/v1/sessions/{clientId}")]
-        [HttpDelete]
-        public async Task<ActionResult> DeleteSession(string clientId)
-        {
-            clientId = HttpUtility.UrlDecode(clientId);
-
-            var session = (await _mqttServerService.GetSessionStatusAsync()).FirstOrDefault(c => c.ClientId == clientId);
-            if (session == null)
-            {
-                return new StatusCodeResult((int)HttpStatusCode.NotFound);
-            }
-
-            await session.DeleteAsync();
-            return StatusCode((int)HttpStatusCode.NoContent);
-        }
-
-        [Route("api/v1/sessions/{clientId}/pendingApplicationMessages")]
-        [HttpDelete]
-        public async Task<ActionResult> DeletePendingApplicationMessages(string clientId)
-        {
-            clientId = HttpUtility.UrlDecode(clientId);
-
-            var session = (await _mqttServerService.GetSessionStatusAsync()).FirstOrDefault(c => c.ClientId == clientId);
-            if (session == null)
-            {
-                return new StatusCodeResult((int)HttpStatusCode.NotFound);
-            }
-
-            await session.ClearPendingApplicationMessagesAsync();
-            return StatusCode((int)HttpStatusCode.NoContent);
-        }
+        await session.ClearApplicationMessagesQueueAsync();
+        return StatusCode((int)HttpStatusCode.NoContent);
     }
 }

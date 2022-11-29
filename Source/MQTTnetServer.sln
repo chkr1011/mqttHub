@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnet.Server", "MQTTnet.Server.csproj", "{16F0281F-84D3-4D6C-985D-1C0D48CB259C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MQTTnetServer", "MQTTnetServer.csproj", "{16F0281F-84D3-4D6C-985D-1C0D48CB259C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{B34EAA2D-5540-46E8-A90D-321589AAECE9}"
 	ProjectSection(SolutionItems) = preProject

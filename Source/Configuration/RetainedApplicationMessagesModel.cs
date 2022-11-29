@@ -1,11 +1,12 @@
-﻿namespace MQTTnet.Server.Configuration
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+namespace MQTTnetServer.Configuration;
+
+public sealed class RetainedApplicationMessagesModel
 {
-    public class RetainedApplicationMessagesModel
-    {
-        public bool Persist { get; set; } = false;
+    public bool Persist { get; set; } = false;
 
-        public int WriteInterval { get; set; } = 10;
+    public int WriteInterval { get; set; } = 10;
 
-        public string Path { get; set; }
-    }
+    public string Path { get; set; }
 }

@@ -1,53 +1,26 @@
-﻿namespace MQTTnet.Server.Configuration
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+namespace MQTTnetServer.Configuration;
+
+public sealed class MqttSettingsModel
 {
-    /// <summary>
-    /// MQTT settings Model
-    /// </summary>
-    public class MqttSettingsModel
-    {
-        /// <summary>
-        /// Set default connection timeout in seconds
-        /// </summary>
-        public int CommunicationTimeout { get; set; } = 15;
+    public int CommunicationTimeout { get; set; } = 15;
 
-        /// <summary>
-        /// Set 0 to disable connection backlogging
-        /// </summary>
-        public int ConnectionBacklog { get; set; }
+    public int ConnectionBacklog { get; set; }
 
-        /// <summary>
-        /// Enable support for persistent sessions
-        /// </summary>
-        public bool EnablePersistentSessions { get; set; } = false;
+    public bool EnablePersistentSessions { get; set; } = false;
 
-        /// <summary>
-        /// Listen Settings
-        /// </summary>
-        public TcpEndPointModel TcpEndPoint { get; set; } = new TcpEndPointModel();
+    public TcpEndPointModel TcpEndPoint { get; set; } = new();
 
-        /// <summary>
-        /// Encryption Listen Settings
-        /// </summary>
-        public TcpEndPointModel EncryptedTcpEndPoint { get; set; } = new TcpEndPointModel();
+    public TcpEndPointModel EncryptedTcpEndPoint { get; set; } = new();
 
-        /// <summary>
-        /// Settings for the Web Socket endpoint.
-        /// </summary>
-        public WebSocketEndPointModel WebSocketEndPoint { get; set; } = new WebSocketEndPointModel();
+    public WebSocketEndPointModel WebSocketEndPoint { get; set; } = new();
 
-        /// <summary>
-        /// Set limit for max pending messages per client
-        /// </summary>
-        public int MaxPendingMessagesPerClient { get; set; } = 250;
+    public int MaxPendingMessagesPerClient { get; set; } = 250;
 
-        /// <summary>
-        /// The settings for retained messages.
-        /// </summary>
-        public RetainedApplicationMessagesModel RetainedApplicationMessages { get; set; } = new RetainedApplicationMessagesModel();
+    public RetainedApplicationMessagesModel RetainedApplicationMessages { get; set; } = new();
 
-        /// <summary>
-        /// Enables or disables the MQTTnet internal logging.
-        /// </summary>
-        public bool EnableDebugLogging { get; set; } = false;
-    }
+    public bool EnableDebugLogging { get; set; } = false;
 }

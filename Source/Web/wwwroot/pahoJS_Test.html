@@ -9,7 +9,7 @@
         var mqttClient = new Paho.MQTT.Client("localhost", 80, "/mqtt", "pahoJS_client");
         mqttClient.onConnectionLost = onConnectionLost;
         mqttClient.onMessageArrived = onMessageArrived;
-        mqttClient.connect({ onSuccess: onConnect });
+        mqttClient.connect({onSuccess: onConnect});
 
         function onConnect() {
             console.log("MQTT client connected");
@@ -25,6 +25,7 @@
         function onMessageArrived(message) {
             console.log("onMessageArrived:" + message.payloadString);
         }
+
         function buttonClick() {
             message = new Paho.MQTT.Message("Hello");
             message.destinationName = "pahoJS_topic";
@@ -35,7 +36,7 @@
 </head>
 
 <body>
-    <button onclick="buttonClick()">Publish</button>
+<button onclick="buttonClick()">Publish</button>
 </body>
 
 </html>

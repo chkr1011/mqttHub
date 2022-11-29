@@ -6,74 +6,73 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MQTTnet.Server.Mqtt;
-using MQTTnet.Server.Status;
+using MQTTnet.Server;
+using MQTTnetServer.Mqtt;
 
-namespace MQTTnet.Server.Controllers
+namespace MQTTnetServer.Controllers;
+
+[Authorize]
+[ApiController]
+public sealed class ClientsController : Controller
 {
-    [Authorize]
-    [ApiController]
-    public class ClientsController : Controller
+    readonly MqttServerService _mqttServerService;
+
+    public ClientsController(MqttServerService mqttServerService)
     {
-        private readonly MqttServerService _mqttServerService;
+        _mqttServerService = mqttServerService ?? throw new ArgumentNullException(nameof(mqttServerService));
+    }
 
-        public ClientsController(MqttServerService mqttServerService)
+    [Route("api/v1/clients")]
+    [HttpGet]
+    public async Task<ActionResult<IList<MqttClientStatus>>> GetClients()
+    {
+        return new ObjectResult(await _mqttServerService.GetClientStatusAsync());
+    }
+
+    [Route("api/v1/clients/{clientId}")]
+    [HttpGet]
+    public async Task<ActionResult<MqttClientStatus>> GetClient(string clientId)
+    {
+        clientId = HttpUtility.UrlDecode(clientId);
+
+        var client = (await _mqttServerService.GetClientStatusAsync()).FirstOrDefault(c => c.Id == clientId);
+        if (client == null)
         {
-            _mqttServerService = mqttServerService ?? throw new ArgumentNullException(nameof(mqttServerService));
+            return new StatusCodeResult((int)HttpStatusCode.NotFound);
         }
 
-        [Route("api/v1/clients")]
-        [HttpGet]
-        public async Task<ActionResult<IList<IMqttClientStatus>>> GetClients()
+        return new ObjectResult(client);
+    }
+
+    [Route("api/v1/clients/{clientId}")]
+    [HttpDelete]
+    public async Task<ActionResult> DeleteClient(string clientId)
+    {
+        clientId = HttpUtility.UrlDecode(clientId);
+
+        var client = (await _mqttServerService.GetClientStatusAsync()).FirstOrDefault(c => c.Id == clientId);
+        if (client == null)
         {
-            return new ObjectResult(await _mqttServerService.GetClientStatusAsync());
+            return new StatusCodeResult((int)HttpStatusCode.NotFound);
         }
 
-        [Route("api/v1/clients/{clientId}")]
-        [HttpGet]
-        public async Task<ActionResult<IMqttClientStatus>> GetClient(string clientId)
+        await client.DisconnectAsync();
+        return StatusCode((int)HttpStatusCode.NoContent);
+    }
+
+    [Route("api/v1/clients/{clientId}/statistics")]
+    [HttpDelete]
+    public async Task<ActionResult> DeleteClientStatistics(string clientId)
+    {
+        clientId = HttpUtility.UrlDecode(clientId);
+
+        var client = (await _mqttServerService.GetClientStatusAsync()).FirstOrDefault(c => c.Id == clientId);
+        if (client == null)
         {
-            clientId = HttpUtility.UrlDecode(clientId);
-
-            var client = (await _mqttServerService.GetClientStatusAsync()).FirstOrDefault(c => c.ClientId == clientId);
-            if (client == null)
-            {
-                return new StatusCodeResult((int)HttpStatusCode.NotFound);
-            }
-
-            return new ObjectResult(client);
+            return new StatusCodeResult((int)HttpStatusCode.NotFound);
         }
 
-        [Route("api/v1/clients/{clientId}")]
-        [HttpDelete]
-        public async Task<ActionResult> DeleteClient(string clientId)
-        {
-            clientId = HttpUtility.UrlDecode(clientId);
-
-            var client = (await _mqttServerService.GetClientStatusAsync()).FirstOrDefault(c => c.ClientId == clientId);
-            if (client == null)
-            {
-                return new StatusCodeResult((int)HttpStatusCode.NotFound);
-            }
-
-            await client.DisconnectAsync();
-            return StatusCode((int)HttpStatusCode.NoContent);
-        }
-
-        [Route("api/v1/clients/{clientId}/statistics")]
-        [HttpDelete]
-        public async Task<ActionResult> DeleteClientStatistics(string clientId)
-        {
-            clientId = HttpUtility.UrlDecode(clientId);
-
-            var client = (await _mqttServerService.GetClientStatusAsync()).FirstOrDefault(c => c.ClientId == clientId);
-            if (client == null)
-            {
-                return new StatusCodeResult((int)HttpStatusCode.NotFound);
-            }
-
-            client.ResetStatistics();
-            return StatusCode((int)HttpStatusCode.NoContent);
-        }
+        client.ResetStatistics();
+        return StatusCode((int)HttpStatusCode.NoContent);
     }
 }
