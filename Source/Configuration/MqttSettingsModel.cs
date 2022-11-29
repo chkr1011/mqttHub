@@ -12,15 +12,15 @@ public sealed class MqttSettingsModel
 
     public bool EnablePersistentSessions { get; set; } = false;
 
-    public TcpEndPointModel TcpEndPoint { get; set; } = new();
+    public TcpEndPointModel? TcpEndPoint { get; set; } = new();
 
-    public TcpEndPointModel EncryptedTcpEndPoint { get; set; } = new();
+    public TcpEndPointModel? EncryptedTcpEndPoint { get; set; } = new();
 
-    public WebSocketEndPointModel WebSocketEndPoint { get; set; } = new();
+    public WebSocketEndPointModel? WebSocketEndPoint { get; set; } = new();
 
     public int MaxPendingMessagesPerClient { get; set; } = 250;
 
-    public RetainedApplicationMessagesModel RetainedApplicationMessages { get; set; } = new();
+    public RetainedApplicationMessagesModel? RetainedApplicationMessages { get; set; } = new();
 
     public bool EnableDebugLogging { get; set; } = false;
 }

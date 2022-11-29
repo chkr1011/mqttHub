@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Net;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace MQTTnetServer.Configuration;
 
 public sealed class TcpEndPointModel
 {
-    public CertificateSettingsModel Certificate { get; set; }
+    public CertificateSettingsModel? Certificate { get; set; }
 
     public bool Enabled { get; set; } = true;
 
-    public string IPv4 { get; set; }
+    public string? IPv4 { get; set; }
 
-    public string IPv6 { get; set; }
-
+    public string? IPv6 { get; set; }
 
     public int Port { get; set; } = 1883;
 

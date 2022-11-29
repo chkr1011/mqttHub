@@ -8,5 +8,5 @@ public sealed class RetainedApplicationMessagesModel
 
     public int WriteInterval { get; set; } = 10;
 
-    public string Path { get; set; }
+    public string? Path { get; set; }
 }

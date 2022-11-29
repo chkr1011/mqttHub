@@ -40,7 +40,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: MQTTnetServer-windows-x86
-          path: ${{ github.workspace }}/MQTTnetApp-windows-X86.zip
+          path: ${{ github.workspace }}/MQTTnetServer-windows-X86.zip
 
       - name: Build win-x64
         run: dotnet publish Source/MQTTnetServer.csproj -r win-x64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
