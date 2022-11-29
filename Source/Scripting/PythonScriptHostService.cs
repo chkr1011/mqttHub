@@ -140,7 +140,7 @@ public class PythonScriptHostService
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogWarning(exception, $"Error while unloading script '{scriptInstance.Uid}'.");
+                    _logger.LogWarning(exception, "Error while unloading script \'{ScriptInstanceUid}\'", scriptInstance.Uid);
                 }
             }
 
@@ -159,7 +159,7 @@ public class PythonScriptHostService
 
         try
         {
-            _logger.LogTrace($"Initializing Python script '{uid}'...");
+            _logger.LogTrace("Initializing Python script \'{Uid}\'...", uid);
             var code = await File.ReadAllTextAsync(path).ConfigureAwait(false);
 
             var scriptInstance = CreateScriptInstance(uid, path, code);
@@ -170,11 +170,11 @@ public class PythonScriptHostService
                 _scriptInstances.Add(scriptInstance);
             }
 
-            _logger.LogInformation($"Initialized script '{uid}'.");
+            _logger.LogInformation("Initialized script \'{Uid}\'", uid);
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, $"Error while initializing script '{uid}'.");
+            _logger.LogError(exception, "Error while initializing script \'{Uid}\'", uid);
         }
     }
 
@@ -207,7 +207,7 @@ public class PythonScriptHostService
             if (Directory.Exists(effectivePath))
             {
                 searchPaths.Add(effectivePath);
-                _logger.LogInformation($"Added Python lib path: {effectivePath}");
+                _logger.LogInformation("Added Python lib path: {EffectivePath}", effectivePath);
             }
         }
 

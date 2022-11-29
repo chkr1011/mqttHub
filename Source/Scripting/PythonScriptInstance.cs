@@ -4,7 +4,7 @@ using Microsoft.Scripting.Hosting;
 
 namespace MQTTnetServer.Scripting;
 
-public class PythonScriptInstance
+public sealed class PythonScriptInstance
 {
     readonly ScriptScope _scriptScope;
 
@@ -25,7 +25,7 @@ public class PythonScriptInstance
         return InvokeOptionalFunction(name, parameters, out _);
     }
 
-    public bool InvokeOptionalFunction(string name, object[] parameters, out object result)
+    public bool InvokeOptionalFunction(string name, object[] parameters, out object? result)
     {
         if (name == null)
         {

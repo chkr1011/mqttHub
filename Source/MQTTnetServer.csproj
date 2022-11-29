@@ -40,8 +40,8 @@
         <PackageReference Include="IronPython" Version="2.7.12" />
         <PackageReference Include="IronPython.StdLib" Version="2.7.12" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.2" />
-        <PackageReference Include="MQTTnet" Version="4.1.4.497" />
-        <PackageReference Include="MQTTnet.AspNetCore" Version="4.1.4.497" />
+        <PackageReference Include="MQTTnet" Version="4.1.3.436" />
+        <PackageReference Include="MQTTnet.AspNetCore" Version="4.1.3.436" />
         <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.4.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.4.0" />

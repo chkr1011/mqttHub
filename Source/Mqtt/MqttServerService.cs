@@ -21,7 +21,7 @@ namespace MQTTnetServer.Mqtt;
 
 public sealed class MqttServerService
 {
-    public const string WrappedSessionItemsKey = "WRAPPED_ITEMS";
+    const string WrappedSessionItemsKey = "WRAPPED_ITEMS";
 
     readonly ILogger<MqttServerService> _logger;
     readonly CustomMqttFactory _mqttFactory;
@@ -80,7 +80,7 @@ public sealed class MqttServerService
 
         _mqttServer.StartAsync().GetAwaiter().GetResult();
 
-        _logger.LogInformation("MQTT server started.");
+        _logger.LogInformation("MQTT server started");
     }
 
     Task ClearRetainedMessages(EventArgs eventArgs)
@@ -236,7 +236,7 @@ public sealed class MqttServerService
     {
         try
         {
-            var sessionItems = (PythonDictionary)eventArgs.SessionItems[WrappedSessionItemsKey];
+            var sessionItems = eventArgs.SessionItems[WrappedSessionItemsKey] as PythonDictionary;
 
             var pythonContext = new PythonDictionary
             {

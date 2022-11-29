@@ -9,7 +9,7 @@ public static class PathHelper
     {
         if (path == null)
         {
-            return null;
+            throw new ArgumentNullException(nameof(path));
         }
 
         var uri = new Uri(path, UriKind.RelativeOrAbsolute);

@@ -56,8 +56,8 @@ public sealed class Startup
         application.UseSwaggerUI(o =>
         {
             o.RoutePrefix = "api";
-            o.DocumentTitle = "MQTTnet.Server API";
-            o.SwaggerEndpoint("/api/v1/swagger.json", "MQTTnet.Server API v1");
+            o.DocumentTitle = "MQTTnetServer API";
+            o.SwaggerEndpoint("/api/v1/swagger.json", "MQTTnetServer API v1");
             o.DisplayRequestDuration();
             o.DocExpansion(DocExpansion.List);
             o.DefaultModelRendering(ModelRendering.Model);
@@ -108,9 +108,9 @@ public sealed class Startup
             c.SwaggerDoc("v1",
                 new OpenApiInfo
                 {
-                    Title = "MQTTnet.Server API",
+                    Title = "MQTTnetServer API",
                     Version = "v1",
-                    Description = "The public API for the MQTT broker MQTTnet.Server.",
+                    Description = "The public API for the MQTT broker MQTTnetServer.",
                     License = new OpenApiLicense
                     {
                         Name = "MIT",
@@ -118,7 +118,7 @@ public sealed class Startup
                     },
                     Contact = new OpenApiContact
                     {
-                        Name = "MQTTnet.Server",
+                        Name = "MQTTnetServer",
                         Email = string.Empty,
                         Url = new Uri("https://github.com/chkr1011/MQTTnet.Server")
                     }
@@ -169,7 +169,7 @@ public sealed class Startup
             {
                 if (context.WebSockets.IsWebSocketRequest)
                 {
-                    string subProtocol = null;
+                    string? subProtocol = null;
                     if (context.Request.Headers.TryGetValue("Sec-WebSocket-Protocol", out var requestedSubProtocolValues))
                     {
                         subProtocol = MqttSubProtocolSelector.SelectSubProtocol(requestedSubProtocolValues);

@@ -31,7 +31,7 @@ public sealed class MqttServerStorage
     {
         if (_mqttSettings.RetainedApplicationMessages?.Persist != true || string.IsNullOrEmpty(_mqttSettings.RetainedApplicationMessages.Path))
         {
-            _logger.LogInformation("Persisting of retained application messages is disabled.");
+            _logger.LogInformation("Persisting of retained application messages is disabled");
             return;
         }
 
@@ -79,11 +79,11 @@ public sealed class MqttServerStorage
                 var json = JsonConvert.SerializeObject(messages);
                 await File.WriteAllTextAsync(_path, json, Encoding.UTF8).ConfigureAwait(false);
 
-                _logger.LogInformation($"{messages.Count} retained MQTT messages written.");
+                _logger.LogInformation("{MessagesCount} retained MQTT messages written", messages.Count);
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, "Error while writing retained MQTT messages.");
+                _logger.LogError(exception, "Error while writing retained MQTT messages");
             }
         }
     }
@@ -92,27 +92,27 @@ public sealed class MqttServerStorage
     {
         if (_mqttSettings.RetainedApplicationMessages?.Persist != true)
         {
-            return null;
+            return new List<MqttApplicationMessage>();
         }
 
         if (!File.Exists(_path))
         {
-            return null;
+            return new List<MqttApplicationMessage>();
         }
 
         try
         {
             var json = await File.ReadAllTextAsync(_path).ConfigureAwait(false);
-            var applicationMessages = JsonConvert.DeserializeObject<List<MqttApplicationMessage>>(json);
+            var applicationMessages = JsonConvert.DeserializeObject<List<MqttApplicationMessage>>(json) ?? new List<MqttApplicationMessage>();
 
-            _logger.LogInformation($"{applicationMessages.Count} retained MQTT messages loaded.");
+            _logger.LogInformation("{ApplicationMessagesCount} retained MQTT messages loaded", applicationMessages.Count);
 
             return applicationMessages;
         }
         catch (Exception exception)
         {
-            _logger.LogWarning(exception, "Error while loading persisted retained application messages.");
-            return null;
+            _logger.LogWarning(exception, "Error while loading persisted retained application messages");
+            return new List<MqttApplicationMessage>();
         }
     }
 }
