@@ -174,7 +174,7 @@ jobs:
           chmod 755 packaging/DEBIAN/prerm
 
       - name: Move artifacts to packaging directory
-        run: cp -R Source/MQTTnetServer/bin/Release/net6.0/linux-x64/publish/* packaging/opt/MQTTnetServer
+        run: cp -R Source/bin/Release/net6.0/linux-x64/publish/* packaging/opt/MQTTnetServer
 
       - name: Adjust files
         run: |
