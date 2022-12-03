@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  VERSION: "4.0.0.${{github.run_number}}"
+  VERSION: "4.0.1.${{github.run_number}}"
 
 jobs:
   build:
@@ -161,6 +161,48 @@ jobs:
         with:
           name: MQTTnetServer-linux-arm64
           path: ${{ github.workspace }}/MQTTnetServer-linux-ARM64.zip
+
+      # Debian package
+      - name: Set up installation directory
+        run: mkdir -p packaging/opt/MQTTnetServer
+
+      - name: Copy meta data
+        run: |
+          cp -R Build/deb-meta/* packaging/
+          chmod 755 packaging/DEBIAN/postinst
+          chmod 755 packaging/DEBIAN/postrm
+          chmod 755 packaging/DEBIAN/prerm
+
+      - name: Move artifacts to packaging directory
+        run: cp -R Source/MQTTnetServer/bin/Release/net6.0/linux-x64/publish/* packaging/opt/MQTTnetServer
+
+      - name: Adjust files
+        run: |
+          rm packaging/opt/MQTTnetServer/appsettings.Development.json
+          mv packaging/opt/MQTTnetServer/appsettings.json packaging/opt/MQTTnetServer/appsettings.template.json
+
+      - name: Adjust permissions
+        run: |
+          cd packaging/opt/MQTTnetServer
+          find . -type f | xargs chmod -R 644
+          chmod 755 MQTTnetServer
+
+      - name: Generate MD5s
+        run: |
+          cd packaging/          
+          md5sum $(find * -type f -not -path 'DEBIAN/*') > DEBIAN/md5sums
+
+      - name: Patch meta
+        run: sed -i 's/\VERSIONPLACEHOLDER/${{ env.VERSION }}/' packaging/DEBIAN/control
+
+      - name: Package everything
+        run: dpkg-deb -v --build packaging/ mqttnet-server_${{ env.VERSION }}-1_amd64.deb
+
+      - name: Save .deb artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: mqttnet-server
+          path: mqttnet-server_${{ env.VERSION }}-1_amd64.deb
 
       # Release Management
       - name: Delete release drafts
