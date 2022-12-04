@@ -38,12 +38,12 @@ public sealed class AuthenticationHandler : AuthenticationHandler<Authentication
 
             var scheme = parsedHeaderValue.Scheme;
             var parameter = parsedHeaderValue.Parameter;
-            string username = null;
-            string password = null;
+            string? username = null;
+            string? password = null;
 
             if (scheme.Equals("Basic", StringComparison.OrdinalIgnoreCase))
             {
-                var credentialBytes = Convert.FromBase64String(parsedHeaderValue.Parameter);
+                var credentialBytes = Convert.FromBase64String(parsedHeaderValue.Parameter ?? string.Empty);
                 var credentials = Encoding.UTF8.GetString(credentialBytes).Split(':');
                 username = credentials[0];
                 password = credentials[1];
@@ -77,7 +77,7 @@ public sealed class AuthenticationHandler : AuthenticationHandler<Authentication
         }
         catch (Exception exception)
         {
-            _logger.LogWarning("Error while authenticating user.", exception);
+            _logger.LogWarning(exception, "Error while authenticating user");
 
             return AuthenticateResult.Fail(exception);
         }
@@ -87,7 +87,7 @@ public sealed class AuthenticationHandler : AuthenticationHandler<Authentication
         }
     }
 
-    bool ValidateUser(PythonDictionary context)
+    static bool ValidateUser(PythonDictionary context)
     {
         var handlerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Web", "authorization_handler.py");
         if (!File.Exists(handlerPath))

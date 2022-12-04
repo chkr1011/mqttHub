@@ -31,7 +31,7 @@ public sealed class MqttServerService
     readonly MqttSettingsModel _settings;
     readonly MqttWebSocketServerAdapter _webSocketServerAdapter;
 
-    MqttServer _mqttServer;
+    MqttServer? _mqttServer;
 
     public MqttServerService(MqttSettingsModel mqttSettings, CustomMqttFactory mqttFactory, MqttServerStorage mqttServerStorage, PythonScriptHostService pythonScriptHostService, ILogger<MqttServerService> logger)
     {
@@ -92,7 +92,7 @@ public sealed class MqttServerService
     async Task LoadRetainedMessages(LoadingRetainedMessagesEventArgs eventArgs)
     {
         var retainedMessages = await _mqttServerStorage.LoadRetainedMessagesAsync();
-        if (retainedMessages?.Any() == true)
+        if (retainedMessages.Any())
         {
             eventArgs.LoadedRetainedMessages = retainedMessages;
         }
@@ -149,7 +149,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while validating client connection.");
+            _logger.LogError(exception, "Error while validating client connection");
 
             eventArgs.ReasonCode = MqttConnectReasonCode.UnspecifiedError;
         }
@@ -175,7 +175,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while handling client unsubscribed topic event.");
+            _logger.LogError(exception, "Error while handling client unsubscribed topic event");
         }
 
         return Task.CompletedTask;
@@ -202,7 +202,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while handling client subscribed topic event.");
+            _logger.LogError(exception, "Error while handling client subscribed topic event");
         }
 
         return Task.CompletedTask;
@@ -226,7 +226,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while handling client unsubscribed topic event.");
+            _logger.LogError(exception, "Error while handling client unsubscribed topic event");
         }
 
         return Task.CompletedTask;
@@ -267,7 +267,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while intercepting subscription.");
+            _logger.LogError(exception, "Error while intercepting subscription");
         }
 
         return Task.CompletedTask;
@@ -279,7 +279,7 @@ public sealed class MqttServerService
         {
             // This might be not set when a message was published by the server instead of a client.
 
-            object sessionItems = null;
+            object? sessionItems = null;
             if (eventArgs.SessionItems.Contains(WrappedSessionItemsKey))
             {
                 sessionItems = eventArgs.SessionItems[WrappedSessionItemsKey];
@@ -319,7 +319,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while intercepting application message.");
+            _logger.LogError(exception, "Error while intercepting application message");
         }
 
         return Task.CompletedTask;
@@ -343,7 +343,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while handling client disconnected event.");
+            _logger.LogError(exception, "Error while handling client disconnected event");
         }
 
         return Task.CompletedTask;
@@ -364,7 +364,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while handling client connected event.");
+            _logger.LogError(exception, "Error while handling client connected event");
         }
 
         return Task.CompletedTask;
@@ -377,22 +377,22 @@ public sealed class MqttServerService
 
     public Task<IList<MqttClientStatus>> GetClientStatusAsync()
     {
-        return _mqttServer.GetClientsAsync();
+        return _mqttServer!.GetClientsAsync();
     }
 
     public Task<IList<MqttSessionStatus>> GetSessionStatusAsync()
     {
-        return _mqttServer.GetSessionsAsync();
+        return _mqttServer!.GetSessionsAsync();
     }
 
     public Task ClearRetainedApplicationMessagesAsync()
     {
-        return _mqttServer.DeleteRetainedMessagesAsync();
+        return _mqttServer!.DeleteRetainedMessagesAsync();
     }
 
     public Task<IList<MqttApplicationMessage>> GetRetainedApplicationMessagesAsync()
     {
-        return _mqttServer.GetRetainedMessagesAsync();
+        return _mqttServer!.GetRetainedMessagesAsync();
     }
 
     public void Publish(MqttApplicationMessage applicationMessage)
@@ -402,7 +402,7 @@ public sealed class MqttServerService
             throw new ArgumentNullException(nameof(applicationMessage));
         }
 
-        _mqttServer.InjectApplicationMessage(new InjectedMqttApplicationMessage(applicationMessage)
+        _mqttServer?.InjectApplicationMessage(new InjectedMqttApplicationMessage(applicationMessage)
         {
             SenderClientId = "MQTTnet.Server"
         });
@@ -446,7 +446,7 @@ public sealed class MqttServerService
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "Error while publishing application message from server.");
+            _logger.LogError(exception, "Error while publishing application message from server");
         }
     }
 
@@ -455,7 +455,7 @@ public sealed class MqttServerService
         var options = new MqttServerOptionsBuilder().WithMaxPendingMessagesPerClient(_settings.MaxPendingMessagesPerClient).WithDefaultCommunicationTimeout(TimeSpan.FromSeconds(_settings.CommunicationTimeout));
 
         // Configure unencrypted connections
-        if (_settings.TcpEndPoint.Enabled)
+        if (_settings.TcpEndPoint?.Enabled == true)
         {
             options.WithDefaultEndpoint();
 
@@ -480,9 +480,9 @@ public sealed class MqttServerService
         }
 
         // Configure encrypted connections
-        if (_settings.EncryptedTcpEndPoint.Enabled)
+        if (_settings.EncryptedTcpEndPoint?.Enabled == true)
         {
-#if NETCOREAPP3_1 || NET5_0
+#if NETCOREAPP3_1_OR_GREATER
                 options
                     .WithEncryptedEndpoint()
                     .WithEncryptionSslProtocol(SslProtocols.Tls13);
@@ -490,32 +490,36 @@ public sealed class MqttServerService
             options.WithEncryptedEndpoint().WithEncryptionSslProtocol(SslProtocols.Tls12);
 #endif
 
-            if (!string.IsNullOrEmpty(_settings.EncryptedTcpEndPoint?.Certificate?.Path))
+            var certificate = _settings.EncryptedTcpEndPoint?.Certificate?.ReadCertificate();
+            if (certificate != null)
             {
-                IMqttServerCertificateCredentials certificateCredentials = null;
-
-                if (!string.IsNullOrEmpty(_settings.EncryptedTcpEndPoint?.Certificate?.Password))
+                if (!string.IsNullOrEmpty(_settings.EncryptedTcpEndPoint?.Certificate?.Path))
                 {
-                    certificateCredentials = new MqttServerCertificateCredentials
-                    {
-                        Password = _settings.EncryptedTcpEndPoint.Certificate.Password
-                    };
-                }
+                    IMqttServerCertificateCredentials? certificateCredentials = null;
 
-                options.WithEncryptionCertificate(_settings.EncryptedTcpEndPoint.Certificate.ReadCertificate(), certificateCredentials);
+                    if (!string.IsNullOrEmpty(_settings.EncryptedTcpEndPoint?.Certificate?.Password))
+                    {
+                        certificateCredentials = new MqttServerCertificateCredentials
+                        {
+                            Password = _settings.EncryptedTcpEndPoint.Certificate.Password
+                        };
+                    }
+                
+                    options.WithEncryptionCertificate(certificate, certificateCredentials);
+                } 
             }
 
-            if (_settings.EncryptedTcpEndPoint.TryReadIPv4(out var address4))
+            if (_settings.EncryptedTcpEndPoint?.TryReadIPv4(out var address4) == true)
             {
                 options.WithEncryptedEndpointBoundIPAddress(address4);
             }
 
-            if (_settings.EncryptedTcpEndPoint.TryReadIPv6(out var address6))
+            if (_settings.EncryptedTcpEndPoint?.TryReadIPv6(out var address6) == true)
             {
                 options.WithEncryptedEndpointBoundIPV6Address(address6);
             }
 
-            if (_settings.EncryptedTcpEndPoint.Port > 0)
+            if (_settings.EncryptedTcpEndPoint?.Port > 0)
             {
                 options.WithEncryptedEndpointPort(_settings.EncryptedTcpEndPoint.Port);
             }

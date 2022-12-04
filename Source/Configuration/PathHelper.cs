@@ -5,7 +5,7 @@ namespace MQTTnetServer.Configuration;
 
 public static class PathHelper
 {
-    public static string ExpandPath(string path)
+    public static string ExpandPath(string? path)
     {
         if (path == null)
         {

@@ -7,7 +7,7 @@ namespace MQTTnetServer.Scripting;
 
 public static class PythonConvert
 {
-    public static object ToPython(object value)
+    public static object? ToPython(object? value)
     {
         if (value is PythonDictionary)
         {
@@ -66,6 +66,11 @@ public static class PythonConvert
 
     public static string Pythonfy(string value)
     {
+        if (value == null)
+        {
+            throw new ArgumentNullException(nameof(value));
+        }
+
         var result = new StringBuilder();
         foreach (var @char in value)
         {

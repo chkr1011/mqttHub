@@ -27,7 +27,7 @@ public class DataSharingService
         lock (_storage)
         {
             _storage[key] = value;
-            _logger.LogInformation($"Shared data with key '{key}' updated.");
+            _logger.LogInformation("Shared data with key '{Key}' updated", key);
         }
     }
 

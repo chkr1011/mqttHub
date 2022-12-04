@@ -31,7 +31,7 @@ public static class Program
     {
         Console.ResetColor();
         Console.ForegroundColor = ConsoleColor.Red;
-        const string LogoText = @"
+        const string logo = @"
 
 ███╗   ███╗ ██████╗ ████████╗████████╗███╗   ██╗███████╗████████╗    ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗ 
 ████╗ ████║██╔═══██╗╚══██╔══╝╚══██╔══╝████╗  ██║██╔════╝╚══██╔══╝    ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗
@@ -42,12 +42,12 @@ public static class Program
                                                                                                                       
 ";
 
-        Console.WriteLine(LogoText);
+        Console.WriteLine(logo);
         Console.ResetColor();
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("The official MQTT server implementation of MQTTnet");
-        Console.WriteLine("Copyright (c) 2017-2022 The MQTTnet.Server Team");
+        Console.WriteLine("A MQTT server implementation based on the MQTTnet library");
+        Console.WriteLine("Copyright (c) 2017-2023 The MQTTnet.Server Team");
         Console.WriteLine(@"https://github.com/chkr1011/MQTTnet.Server");
 
         Console.ForegroundColor = ConsoleColor.White;

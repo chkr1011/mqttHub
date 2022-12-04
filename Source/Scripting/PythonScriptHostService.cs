@@ -17,19 +17,19 @@ namespace MQTTnetServer.Scripting;
 public class PythonScriptHostService
 {
     readonly ILogger<PythonScriptHostService> _logger;
-    readonly IDictionary<string, object> _proxyObjects = new ExpandoObject();
+    readonly IDictionary<string, object> _proxyObjects = new ExpandoObject()!;
     readonly ScriptEngine _scriptEngine;
     readonly ScriptingSettingsModel _scriptingSettings;
     readonly List<PythonScriptInstance> _scriptInstances = new();
     readonly string _scriptsPath;
 
-    public PythonScriptHostService(ScriptingSettingsModel scriptingSettings, PythonIOStream pythonIOStream, ILogger<PythonScriptHostService> logger)
+    public PythonScriptHostService(ScriptingSettingsModel scriptingSettings, PythonIOStream pythonIoStream, ILogger<PythonScriptHostService> logger)
     {
         _scriptingSettings = scriptingSettings ?? throw new ArgumentNullException(nameof(scriptingSettings));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         _scriptEngine = Python.CreateEngine();
-        _scriptEngine.Runtime.IO.SetOutput(pythonIOStream, Encoding.UTF8);
+        _scriptEngine.Runtime.IO.SetOutput(pythonIoStream, Encoding.UTF8);
 
         _scriptsPath = PathHelper.ExpandPath(scriptingSettings.ScriptsPath);
     }
@@ -73,7 +73,7 @@ public class PythonScriptHostService
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, $"Error while invoking function '{name}' at script '{pythonScriptInstance.Uid}'.");
+                    _logger.LogError(exception, "Error while invoking function '{Name}' at script '{PythonScriptInstanceUid}'", name, pythonScriptInstance.Uid);
                 }
             }
         }
@@ -94,7 +94,7 @@ public class PythonScriptHostService
             throw new ArgumentNullException(nameof(uid));
         }
 
-        string path;
+        string? path;
 
         lock (_scriptInstances)
         {
@@ -103,7 +103,7 @@ public class PythonScriptHostService
 
         if (path == null || !File.Exists(path))
         {
-            return null;
+            return Task.FromResult(string.Empty);
         }
 
         return File.ReadAllTextAsync(path, Encoding.UTF8, cancellationToken);
