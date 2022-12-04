@@ -26,3 +26,7 @@ Windows:
 > 
 Linux:		
 > ./MQTTnetServer (must be set to _executable_ first via chmod +x ./MQTTnetServer)
+
+## Swagger API
+
+The URI for the Swagger API frontend is: _/api/index.html_

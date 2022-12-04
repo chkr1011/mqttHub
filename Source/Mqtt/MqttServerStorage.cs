@@ -19,7 +19,7 @@ public sealed class MqttServerStorage
     readonly MqttSettingsModel _mqttSettings;
     bool _messagesHaveChanged;
 
-    string _path;
+    string _path = string.Empty;
 
     public MqttServerStorage(MqttSettingsModel mqttSettings, ILogger<MqttServerStorage> logger)
     {
@@ -62,7 +62,10 @@ public sealed class MqttServerStorage
         {
             try
             {
-                await Task.Delay(TimeSpan.FromSeconds(_mqttSettings.RetainedApplicationMessages.WriteInterval)).ConfigureAwait(false);
+
+                var interval = _mqttSettings.RetainedApplicationMessages?.WriteInterval ?? 30;
+                
+                await Task.Delay(TimeSpan.FromSeconds(interval)).ConfigureAwait(false);
 
                 List<MqttApplicationMessage> messages;
                 lock (_messages)

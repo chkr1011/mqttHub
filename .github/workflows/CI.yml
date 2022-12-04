@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  VERSION: "4.0.1.${{github.run_number}}"
+  VERSION: "4.0.2.${{github.run_number}}"
 
 jobs:
   build:
@@ -196,13 +196,13 @@ jobs:
         run: sed -i 's/\VERSIONPLACEHOLDER/${{ env.VERSION }}/' packaging/DEBIAN/control
 
       - name: Package everything
-        run: dpkg-deb -v --build packaging/ mqttnet-server_${{ env.VERSION }}-1_amd64.deb
+        run: dpkg-deb -v --build packaging/ mqttnet-server_${{ env.VERSION }}_amd64.deb
 
       - name: Save .deb artifact
         uses: actions/upload-artifact@v2
         with:
-          name: mqttnet-server
-          path: mqttnet-server_${{ env.VERSION }}-1_amd64.deb
+          name: mqttnet-server_${{ env.VERSION }}_amd64.deb
+          path: mqttnet-server_${{ env.VERSION }}_amd64.deb
 
       # Release Management
       - name: Delete release drafts

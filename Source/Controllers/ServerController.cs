@@ -14,6 +14,6 @@ public sealed class ServerController : Controller
     public ActionResult<string> GetVersion()
     {
         var fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-        return fileVersion.ProductVersion;
+        return fileVersion.ProductVersion ?? "0.0.0.0";
     }
 }
