@@ -64,7 +64,7 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: Source/bin/Release/win-arm/publish/
-          dest: mqttHub-windows-ARM.zip
+          dest: mqttHub-windows-arm.zip
 
       - name: Collect win-arm artifacts
         uses: actions/upload-artifact@v2
@@ -79,7 +79,7 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: Source/bin/Release/win-arm64/publish/
-          dest: mqttHub-windows-ARM64.zip
+          dest: mqttHub-windows-arm64.zip
 
       - name: Collect win-arm64 artifacts
         uses: actions/upload-artifact@v2
@@ -94,7 +94,7 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: Source/bin/Release/osx.12-x64/publish/
-          dest: mqttHub-macOS-X64.zip
+          dest: mqttHub-macOS-x64.zip
 
       - name: Collect osx-x64 artifacts
         uses: actions/upload-artifact@v2
@@ -109,7 +109,7 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: Source/bin/Release/osx.12-arm64/publish/
-          dest: mqttHub-macOS-ARM64.zip
+          dest: mqttHub-macOS-arm64.zip
 
       - name: Collect osx-arm64 artifacts
         uses: actions/upload-artifact@v2
@@ -130,7 +130,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: mqttHub-linux-x64
-          path: ${{ github.workspace }}/mqttHub-linux-X64.zip
+          path: ${{ github.workspace }}/mqttHub-linux-x64.zip
 
       - name: Build linux-arm
         run: dotnet publish Source/mqttHub.csproj -r linux-arm -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
