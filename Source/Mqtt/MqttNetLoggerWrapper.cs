@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Diagnostics;
+using MQTTnet.Server;
 
 namespace mqttHub.Mqtt;
 
@@ -8,7 +9,8 @@ public sealed class MqttNetLoggerWrapper : IMqttNetLogger
 {
     readonly ILogger _logger;
 
-    public MqttNetLoggerWrapper(ILogger logger)
+    // ReSharper disable once ContextualLoggerProblem
+    public MqttNetLoggerWrapper(ILogger<MqttServer> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
