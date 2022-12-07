@@ -1,4 +1,4 @@
-Package: mqttnet-server
+Package: mqttHub
 Version: VERSIONPLACEHOLDER
 Section: base
 Priority: optional
@@ -7,4 +7,4 @@ Depends: libssl1.1
 Suggests:
 Maintainer: Damian Wolgast <packages@asymetrixs.net>
 Description:
-  MQTTnet Server is a standalone cross platform MQTT server (like mosquitto) basing on this library.
+  mqttHub is a standalone cross platform MQTT broker with Python scripting support.

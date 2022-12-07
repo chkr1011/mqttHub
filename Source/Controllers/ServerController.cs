@@ -3,7 +3,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MQTTnetServer.Controllers;
+namespace mqttHub.Controllers;
 
 [Authorize]
 [ApiController]

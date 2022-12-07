@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using mqttHub.Mqtt;
 using MQTTnet.Server;
-using MQTTnetServer.Mqtt;
 
-namespace MQTTnetServer.Controllers;
+namespace mqttHub.Controllers;
 
 [Authorize]
 [ApiController]

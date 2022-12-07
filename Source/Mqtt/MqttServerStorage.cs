@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using mqttHub.Configuration;
 using MQTTnet;
-using MQTTnetServer.Configuration;
 using Newtonsoft.Json;
 
-namespace MQTTnetServer.Mqtt;
+namespace mqttHub.Mqtt;
 
 public sealed class MqttServerStorage
 {
@@ -62,9 +62,8 @@ public sealed class MqttServerStorage
         {
             try
             {
-
                 var interval = _mqttSettings.RetainedApplicationMessages?.WriteInterval ?? 30;
-                
+
                 await Task.Delay(TimeSpan.FromSeconds(interval)).ConfigureAwait(false);
 
                 List<MqttApplicationMessage> messages;

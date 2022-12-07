@@ -10,9 +10,9 @@ using IronPython.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
-using MQTTnetServer.Configuration;
+using mqttHub.Configuration;
 
-namespace MQTTnetServer.Scripting;
+namespace mqttHub.Scripting;
 
 public class PythonScriptHostService
 {

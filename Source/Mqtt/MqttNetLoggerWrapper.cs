@@ -1,15 +1,14 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 using MQTTnet.Diagnostics;
-using MQTTnet.Server;
 
-namespace MQTTnetServer.Mqtt;
+namespace mqttHub.Mqtt;
 
 public sealed class MqttNetLoggerWrapper : IMqttNetLogger
 {
-    readonly ILogger<MqttServer> _logger;
+    readonly ILogger _logger;
 
-    public MqttNetLoggerWrapper(ILogger<MqttServer> logger)
+    public MqttNetLoggerWrapper(ILogger logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }

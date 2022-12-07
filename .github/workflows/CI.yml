@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  VERSION: "4.0.2.${{github.run_number}}"
+  VERSION: "4.1.0.${{github.run_number}}"
 
 jobs:
   build:
@@ -24,147 +24,147 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: dotnet restore Source/MQTTnetServer.sln
+        run: dotnet restore Source/mqttHub.sln
 
       # Build applications
       - name: Build win-x86
-        run: dotnet publish Source/MQTTnetServer.csproj -r win-x86 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r win-x86 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip win-x86 build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/win-x86/publish/
-          dest: MQTTnetServer-windows-X86.zip
+          files: Source/bin/Release/win-x86/publish/
+          dest: mqttHub-windows-x86.zip
 
       - name: Collect win-x86 artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-windows-x86
-          path: ${{ github.workspace }}/MQTTnetServer-windows-X86.zip
+          name: mqttHub-windows-x86
+          path: ${{ github.workspace }}/mqttHub-windows-x86.zip
 
       - name: Build win-x64
-        run: dotnet publish Source/MQTTnetServer.csproj -r win-x64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r win-x64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip win-x64 build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/win-x64/publish/
-          dest: MQTTnetServer-windows-X64.zip
+          files: Source/bin/Release/win-x64/publish/
+          dest: mqttHub-windows-x64.zip
 
       - name: Collect win-x64 artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-windows-x64
-          path: ${{ github.workspace }}/MQTTnetServer-windows-X64.zip
+          name: mqttHub-windows-x64
+          path: ${{ github.workspace }}/mqttHub-windows-x64.zip
 
       - name: Build win-arm
-        run: dotnet publish Source/MQTTnetServer.csproj -r win-arm -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r win-arm -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip win-arm build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/win-arm/publish/
-          dest: MQTTnetServer-windows-ARM.zip
+          files: Source/bin/Release/win-arm/publish/
+          dest: mqttHub-windows-ARM.zip
 
       - name: Collect win-arm artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-windows-arm
-          path: ${{ github.workspace }}/MQTTnetServer-windows-ARM.zip
+          name: mqttHub-windows-arm
+          path: ${{ github.workspace }}/mqttHub-windows-arm.zip
 
       - name: Build win-arm64
-        run: dotnet publish Source/MQTTnetServer.csproj -r win-arm64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r win-arm64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip win-arm64 build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/win-arm64/publish/
-          dest: MQTTnetServer-windows-ARM64.zip
+          files: Source/bin/Release/win-arm64/publish/
+          dest: mqttHub-windows-ARM64.zip
 
       - name: Collect win-arm64 artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-windows-arm64
-          path: ${{ github.workspace }}/MQTTnetServer-windows-ARM64.zip
+          name: mqttHub-windows-arm64
+          path: ${{ github.workspace }}/mqttHub-windows-arm64.zip
 
       - name: Build osx-x64
-        run: dotnet publish Source/MQTTnetServer.csproj -r osx.12-x64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false -p:IncludeAllContentForSelfExtract=true --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r osx.12-x64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false -p:IncludeAllContentForSelfExtract=true --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip osx-x64 build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/osx.12-x64/publish/
-          dest: MQTTnetServer-macOS-X64.zip
+          files: Source/bin/Release/osx.12-x64/publish/
+          dest: mqttHub-macOS-X64.zip
 
       - name: Collect osx-x64 artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-macOS-x64
-          path: ${{ github.workspace }}/MQTTnetServer-macOS-X64.zip
+          name: mqttHub-macOS-x64
+          path: ${{ github.workspace }}/mqttHub-macOS-x64.zip
 
       - name: Build osx-arm64
-        run: dotnet publish Source/MQTTnetServer.csproj -r osx.12-arm64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false -p:IncludeAllContentForSelfExtract=true --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r osx.12-arm64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false -p:IncludeAllContentForSelfExtract=true --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip osx-arm64 build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/osx.12-arm64/publish/
-          dest: MQTTnetServer-macOS-ARM64.zip
+          files: Source/bin/Release/osx.12-arm64/publish/
+          dest: mqttHub-macOS-ARM64.zip
 
       - name: Collect osx-arm64 artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-macOS-arm64
-          path: ${{ github.workspace }}/MQTTnetServer-macOS-ARM64.zip
+          name: mqttHub-macOS-arm64
+          path: ${{ github.workspace }}/mqttHub-macOS-arm64.zip
 
       - name: Build linux-x64
-        run: dotnet publish Source/MQTTnetServer.csproj -r linux-x64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r linux-x64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip linux-x64 build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/linux-x64/publish/
-          dest: MQTTnetServer-linux-X64.zip
+          files: Source/bin/Release/linux-x64/publish/
+          dest: mqttHub-linux-x64.zip
 
       - name: Collect linux-x64 artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-linux-x64
-          path: ${{ github.workspace }}/MQTTnetServer-linux-X64.zip
+          name: mqttHub-linux-x64
+          path: ${{ github.workspace }}/mqttHub-linux-X64.zip
 
       - name: Build linux-arm
-        run: dotnet publish Source/MQTTnetServer.csproj -r linux-arm -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r linux-arm -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip linux-arm build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/linux-arm/publish/
-          dest: MQTTnetServer-linux-ARM.zip
+          files: Source/bin/Release/linux-arm/publish/
+          dest: mqttHub-linux-arm.zip
 
       - name: Collect linux-arm artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-linux-arm
-          path: ${{ github.workspace }}/MQTTnetServer-linux-ARM.zip
+          name: mqttHub-linux-arm
+          path: ${{ github.workspace }}/mqttHub-linux-arm.zip
 
       - name: Build linux-arm64
-        run: dotnet publish Source/MQTTnetServer.csproj -r linux-arm64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
+        run: dotnet publish Source/mqttHub.csproj -r linux-arm64 -p:Configuration=Release -p:PublishSingleFile=false -p:PublishReadyToRun=true -p:IncludeNativeLibrariesForSelfExtract=false --self-contained true -property:Version=${{ env.VERSION }}
 
       - name: Zip linux-arm64 build
         uses: vimtor/action-zip@v1
         with:
-          files: Source/bin/Release/net6.0/linux-arm64/publish/
-          dest: MQTTnetServer-linux-ARM64.zip
+          files: Source/bin/Release/linux-arm64/publish/
+          dest: mqttHub-linux-arm64.zip
 
       - name: Collect linux-arm artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: MQTTnetServer-linux-arm64
-          path: ${{ github.workspace }}/MQTTnetServer-linux-ARM64.zip
+          name: mqttHub-linux-arm64
+          path: ${{ github.workspace }}/mqttHub-linux-arm64.zip
 
       # Debian package
       - name: Set up installation directory
-        run: mkdir -p packaging/opt/MQTTnetServer
+        run: mkdir -p packaging/opt/mqttHub
 
       - name: Copy meta data
         run: |
@@ -174,18 +174,18 @@ jobs:
           chmod 755 packaging/DEBIAN/prerm
 
       - name: Move artifacts to packaging directory
-        run: cp -R Source/bin/Release/net6.0/linux-x64/publish/* packaging/opt/MQTTnetServer
+        run: cp -R Source/bin/Release/linux-x64/publish/* packaging/opt/mqttHub
 
       - name: Adjust files
         run: |
-          rm packaging/opt/MQTTnetServer/appsettings.Development.json
-          mv packaging/opt/MQTTnetServer/appsettings.json packaging/opt/MQTTnetServer/appsettings.template.json
+          rm packaging/opt/mqttHub/appsettings.Development.json
+          mv packaging/opt/mqttHub/appsettings.json packaging/opt/mqttHub/appsettings.template.json
 
       - name: Adjust permissions
         run: |
-          cd packaging/opt/MQTTnetServer
+          cd packaging/opt/mqttHub
           find . -type f | xargs chmod -R 644
-          chmod 755 MQTTnetServer
+          chmod 755 mqttHub
 
       - name: Generate MD5s
         run: |
@@ -196,13 +196,13 @@ jobs:
         run: sed -i 's/\VERSIONPLACEHOLDER/${{ env.VERSION }}/' packaging/DEBIAN/control
 
       - name: Package everything
-        run: dpkg-deb -v --build packaging/ mqttnet-server_${{ env.VERSION }}_amd64.deb
+        run: dpkg-deb -v --build packaging/ mqttHub-${{ env.VERSION }}-amd64.deb
 
       - name: Save .deb artifact
         uses: actions/upload-artifact@v2
         with:
-          name: mqttnet-server_${{ env.VERSION }}_amd64.deb
-          path: mqttnet-server_${{ env.VERSION }}_amd64.deb
+          name: mqttHub-${{ env.VERSION }}-amd64.deb
+          path: mqttHub-${{ env.VERSION }}-amd64.deb
 
       # Release Management
       - name: Delete release drafts
@@ -220,12 +220,12 @@ jobs:
           tag_name: v${{ env.VERSION }}
           generate_release_notes: true
           files: |
-            ${{ github.workspace }}/MQTTnetServer-windows-X86.zip
-            ${{ github.workspace }}/MQTTnetServer-windows-X64.zip
-            ${{ github.workspace }}/MQTTnetServer-windows-ARM.zip
-            ${{ github.workspace }}/MQTTnetServer-windows-ARM64.zip
-            ${{ github.workspace }}/MQTTnetServer-macOS-X64.zip
-            ${{ github.workspace }}/MQTTnetServer-macOS-ARM64.zip
-            ${{ github.workspace }}/MQTTnetServer-linux-X64.zip
-            ${{ github.workspace }}/MQTTnetServer-linux-ARM.zip
-            ${{ github.workspace }}/MQTTnetServer-linux-ARM64.zip
+            ${{ github.workspace }}/mqttHub-windows-x86.zip
+            ${{ github.workspace }}/mqttHub-windows-x64.zip
+            ${{ github.workspace }}/mqttHub-windows-arm.zip
+            ${{ github.workspace }}/mqttHub-windows-arm64.zip
+            ${{ github.workspace }}/mqttHub-macOS-x64.zip
+            ${{ github.workspace }}/mqttHub-macOS-arm64.zip
+            ${{ github.workspace }}/mqttHub-linux-x64.zip
+            ${{ github.workspace }}/mqttHub-linux-arm.zip
+            ${{ github.workspace }}/mqttHub-linux-arm64.zip

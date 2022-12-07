@@ -1,14 +1,14 @@
 [Unit]
-Description=MQTTnetServer
+Description=mqttHub
 After=network.target
 
 [Service]
-ExecStart=/opt/MQTTnetServer/MQTTnet.Server
-WorkingDirectory=/opt/MQTTnetServer
+ExecStart=/opt/mqttHub/mqttHub
+WorkingDirectory=/opt/mqttHub
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
-User=mqttnetsrv
+User=mqtthubsrv
 
 [Install]
 WantedBy=multi-user.target

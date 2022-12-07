@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.Scripting;
 
-namespace MQTTnetServer.Web;
+namespace mqttHub.Web;
 
 public sealed class AuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {

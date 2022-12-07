@@ -9,15 +9,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Microsoft.Scripting.Utils;
+using mqttHub.Configuration;
+using mqttHub.Mqtt;
+using mqttHub.Scripting;
+using mqttHub.Scripting.DataSharing;
 using MQTTnet.AspNetCore;
-using MQTTnetServer.Configuration;
-using MQTTnetServer.Mqtt;
-using MQTTnetServer.Scripting;
-using MQTTnetServer.Scripting.DataSharing;
 using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace MQTTnetServer.Web;
+namespace mqttHub.Web;
 
 public sealed class Startup
 {
@@ -108,19 +108,19 @@ public sealed class Startup
             c.SwaggerDoc("v1",
                 new OpenApiInfo
                 {
-                    Title = "MQTTnetServer API",
+                    Title = "mqttHub API",
                     Version = "v1",
-                    Description = "The public API for the MQTT broker MQTTnetServer.",
+                    Description = "The public API of mqttHub.",
                     License = new OpenApiLicense
                     {
                         Name = "MIT",
-                        Url = new Uri("https://github.com/chkr1011/MQTTnet.Server/blob/main/README.md")
+                        Url = new Uri("https://github.com/chkr1011/mqttHub/blob/main/README.md")
                     },
                     Contact = new OpenApiContact
                     {
-                        Name = "MQTTnetServer",
+                        Name = "mqttHub",
                         Email = string.Empty,
-                        Url = new Uri("https://github.com/chkr1011/MQTTnet.Server")
+                        Url = new Uri("https://github.com/chkr1011/mqttHub")
                     }
                 });
         });

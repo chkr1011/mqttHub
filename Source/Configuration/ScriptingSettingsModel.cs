@@ -4,7 +4,7 @@
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace MQTTnetServer.Configuration;
+namespace mqttHub.Configuration;
 
 public sealed class ScriptingSettingsModel
 {

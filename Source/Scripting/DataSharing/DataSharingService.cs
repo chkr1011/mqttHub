@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 
-namespace MQTTnetServer.Scripting.DataSharing;
+namespace mqttHub.Scripting.DataSharing;
 
 public class DataSharingService
 {

@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <Company />
-        <Product>MQTTnetServer</Product>
-        <Description>Standalone MQTT server with Python scripting backend.</Description>
-        <Authors>The authors of MQTTnetServer.</Authors>
+        <Product>mqttHub</Product>
+        <Description>Standalone MQTT broker with Python backend.</Description>
+        <Authors>The mqttHub Team</Authors>
         <SignAssembly>false</SignAssembly>
         <DelaySign>false</DelaySign>
         <LangVersion>latest</LangVersion>
@@ -18,11 +19,11 @@
     </PropertyGroup>
 
     <PropertyGroup>
-        <StartupObject>MQTTnetServer.Program</StartupObject>
+        <StartupObject>mqttHub.Program</StartupObject>
         <UserSecretsId>c564f0de-28b4-45bf-b726-4d665d705653</UserSecretsId>
-        <Copyright>(c) Christian Kratky 2016-2022</Copyright>
-        <PackageProjectUrl>https://github.com/chkr1011/MQTTnet</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/chkr1011/MQTTnet</RepositoryUrl>
+        <Copyright>(c) The mqttHub Team 2017-2023</Copyright>
+        <PackageProjectUrl>https://github.com/chkr1011/mqttHub</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/chkr1011/mqttHub</RepositoryUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

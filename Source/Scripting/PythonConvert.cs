@@ -3,7 +3,7 @@ using System.Collections;
 using System.Text;
 using IronPython.Runtime;
 
-namespace MQTTnetServer.Scripting;
+namespace mqttHub.Scripting;
 
 public static class PythonConvert
 {

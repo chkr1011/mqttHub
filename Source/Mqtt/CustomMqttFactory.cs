@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
+using mqttHub.Configuration;
 using MQTTnet;
 using MQTTnet.Adapter;
 using MQTTnet.Diagnostics;
 using MQTTnet.Server;
-using MQTTnetServer.Configuration;
 
-namespace MQTTnetServer.Mqtt;
+namespace mqttHub.Mqtt;
 
 public sealed class CustomMqttFactory
 {
     readonly IMqttNetLogger _logger;
     readonly MqttFactory _mqttFactory;
 
+    // ReSharper disable once ContextualLoggerProblem
     public CustomMqttFactory(MqttSettingsModel settings, ILogger<MqttServer> logger)
     {
         if (settings == null)
@@ -34,7 +35,7 @@ public sealed class CustomMqttFactory
             var mqttNetLogger = new MqttNetLoggerWrapper(logger);
             _mqttFactory = new MqttFactory(mqttNetLogger);
 
-            logger.LogWarning("Debug logging is enabled. Performance of MQTTnet Server is decreased!");
+            logger.LogWarning("Debug logging is enabled. Performance is decreased!");
         }
         else
         {

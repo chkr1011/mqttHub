@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace MQTTnetServer.Configuration;
+namespace mqttHub.Configuration;
 
 public static class PathHelper
 {

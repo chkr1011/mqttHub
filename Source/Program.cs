@@ -4,9 +4,9 @@ using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using MQTTnetServer.Web;
+using mqttHub.Web;
 
-namespace MQTTnetServer;
+namespace mqttHub;
 
 public static class Program
 {
@@ -29,38 +29,27 @@ public static class Program
 
     static void PrintLogo()
     {
+        var fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+        
+        const string logo = @"
+███    ███  ██████  ████████ ████████ ██   ██ ██    ██ ██████  
+████  ████ ██    ██    ██       ██    ██   ██ ██    ██ ██   ██ 
+██ ████ ██ ██    ██    ██       ██    ███████ ██    ██ ██████  
+██  ██  ██ ██ ▄▄ ██    ██       ██    ██   ██ ██    ██ ██   ██ 
+██      ██  ██████     ██       ██    ██   ██  ██████  ██████  
+               ▀▀                                              
+";
+        
         Console.ResetColor();
         Console.ForegroundColor = ConsoleColor.Red;
-        const string logo = @"
-
-███╗   ███╗ ██████╗ ████████╗████████╗███╗   ██╗███████╗████████╗    ███████╗███████╗██████╗ ██╗   ██╗███████╗██████╗ 
-████╗ ████║██╔═══██╗╚══██╔══╝╚══██╔══╝████╗  ██║██╔════╝╚══██╔══╝    ██╔════╝██╔════╝██╔══██╗██║   ██║██╔════╝██╔══██╗
-██╔████╔██║██║   ██║   ██║      ██║   ██╔██╗ ██║█████╗     ██║       ███████╗█████╗  ██████╔╝██║   ██║█████╗  ██████╔╝
-██║╚██╔╝██║██║▄▄ ██║   ██║      ██║   ██║╚██╗██║██╔══╝     ██║       ╚════██║██╔══╝  ██╔══██╗╚██╗ ██╔╝██╔══╝  ██╔══██╗
-██║ ╚═╝ ██║╚██████╔╝   ██║      ██║   ██║ ╚████║███████╗   ██║       ███████║███████╗██║  ██║ ╚████╔╝ ███████╗██║  ██║
-╚═╝     ╚═╝ ╚══▀▀═╝    ╚═╝      ╚═╝   ╚═╝  ╚═══╝╚══════╝   ╚═╝       ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝
-                                                                                                                      
-";
-
-        Console.WriteLine(logo);
+        Console.Write(logo);
         Console.ResetColor();
         Console.WriteLine();
         Console.ForegroundColor = ConsoleColor.White;
-        Console.WriteLine("A MQTT server implementation based on the MQTTnet library");
-        Console.WriteLine("Copyright (c) 2017-2023 The MQTTnet.Server Team");
-        Console.WriteLine(@"https://github.com/chkr1011/MQTTnet.Server");
-
-        Console.ForegroundColor = ConsoleColor.White;
-
-        var fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
-
-        Console.WriteLine($@"
-Version:    {fileVersion.ProductVersion}
-License:    MIT
-Support:    https://github.com/chkr1011/MQTTnet.Server/issues
-Docs:       https://github.com/chkr1011/MQTTnet.Server/wiki
-");
-
+        Console.WriteLine("Copyright (c) 2017-2023 The mqttHub team (MIT license)");
+        Console.WriteLine();
+        Console.WriteLine("Homepage:      https://github.com/chkr1011/mqttHub");
+        Console.WriteLine($"Version:       {fileVersion.ProductVersion}");
         Console.WriteLine();
     }
 }

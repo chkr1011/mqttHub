@@ -3,11 +3,11 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using mqttHub.Mqtt;
 using MQTTnet;
 using MQTTnet.Protocol;
-using MQTTnetServer.Mqtt;
 
-namespace MQTTnetServer.Controllers;
+namespace mqttHub.Controllers;
 
 [Authorize]
 [ApiController]

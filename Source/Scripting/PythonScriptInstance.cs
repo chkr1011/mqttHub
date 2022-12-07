@@ -2,7 +2,7 @@
 using IronPython.Runtime;
 using Microsoft.Scripting.Hosting;
 
-namespace MQTTnetServer.Scripting;
+namespace mqttHub.Scripting;
 
 public sealed class PythonScriptInstance
 {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace MQTTnetServer.Web;
+namespace mqttHub.Web;
 
 public static class Extensions
 {

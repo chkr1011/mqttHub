@@ -1,6 +1,6 @@
 ﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace MQTTnetServer.Configuration;
+namespace mqttHub.Configuration;
 
 public sealed class RetainedApplicationMessagesModel
 {

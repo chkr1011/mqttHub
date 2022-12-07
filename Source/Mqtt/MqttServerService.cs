@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 using IronPython.Runtime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using mqttHub.Configuration;
+using mqttHub.Scripting;
 using MQTTnet;
 using MQTTnet.Adapter;
 using MQTTnet.AspNetCore;
 using MQTTnet.Implementations;
 using MQTTnet.Protocol;
 using MQTTnet.Server;
-using MQTTnetServer.Configuration;
-using MQTTnetServer.Scripting;
 
-namespace MQTTnetServer.Mqtt;
+namespace mqttHub.Mqtt;
 
 public sealed class MqttServerService
 {
@@ -404,7 +404,7 @@ public sealed class MqttServerService
 
         _mqttServer?.InjectApplicationMessage(new InjectedMqttApplicationMessage(applicationMessage)
         {
-            SenderClientId = "MQTTnet.Server"
+            SenderClientId = "mqttHub"
         });
     }
 
@@ -483,9 +483,7 @@ public sealed class MqttServerService
         if (_settings.EncryptedTcpEndPoint?.Enabled == true)
         {
 #if NETCOREAPP3_1_OR_GREATER
-                options
-                    .WithEncryptedEndpoint()
-                    .WithEncryptionSslProtocol(SslProtocols.Tls13);
+            options.WithEncryptedEndpoint().WithEncryptionSslProtocol(SslProtocols.Tls13);
 #else
             options.WithEncryptedEndpoint().WithEncryptionSslProtocol(SslProtocols.Tls12);
 #endif
@@ -504,9 +502,9 @@ public sealed class MqttServerService
                             Password = _settings.EncryptedTcpEndPoint.Certificate.Password
                         };
                     }
-                
+
                     options.WithEncryptionCertificate(certificate, certificateCredentials);
-                } 
+                }
             }
 
             if (_settings.EncryptedTcpEndPoint?.TryReadIPv4(out var address4) == true)

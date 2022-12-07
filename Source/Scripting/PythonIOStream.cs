@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
-namespace MQTTnetServer.Scripting;
+namespace mqttHub.Scripting;
 
 public class PythonIOStream : Stream
 {
